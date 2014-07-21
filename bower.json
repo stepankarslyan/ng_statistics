@@ -1,0 +1,12 @@
+{
+	"name": "ng_statistics",
+	"description": "an app for managing tasks statistics",
+	"version": "0.0.1",
+	"private": true,
+	"dependencies": {
+		"bootstrap": "*",
+		"angular": "*",
+		"angular-route": "*",
+		"jquery":"*"
+   }
+}
