@@ -1,8 +1,12 @@
-angular.module("StatisticApp").controller("statController", function($scope) {
+angular.module('StatisticApp').controller("statController", function($scope) {
 
   $.ajax({
     url: "/statistics",
     method: "GET",
+    data: {
+    	start: $scope.start + "T00:00:00.000Z",
+    	end: $scope.end + "T00:00:00.000Z"
+    },
     
     success: function(data) {
       $scope.statistics = JSON.parse(data);
@@ -12,7 +16,7 @@ angular.module("StatisticApp").controller("statController", function($scope) {
       
       $scope.$apply();    
     }
-  
+  	
   });
-
+	
 });

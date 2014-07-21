@@ -1,5 +1,9 @@
 <div>
   <h1>Task statistic</h1>
+  <label for="datePicker">From</label>
+  <input type="date"  id="datePicker" ng-model="start" class="form-control"/>
+  <label for="datePicker">Till</label>
+  <input type="date"  id="datePicker" ng-model="end" class="form-control"/>
   <table class="table table-bordered table-hover">
     <tr class="danger">
       <td>Task name</td>
@@ -14,5 +18,6 @@
       <td></td>
     </tr>
   </table>
+  <p ng-bind="start"></p>
 </div>
 				
