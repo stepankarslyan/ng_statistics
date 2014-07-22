@@ -3,5 +3,6 @@ angular.module('StatisticApp', ['ngRoute']).config(['$routeProvider', function($
 //  if (!path) path = '';
 	$routeProvider.
 		when('/show', {templateUrl: path + '/template/statistic.html', controller: 'statController'}).
+		when('/chart', {templateUrl: path + '/template/chart.html', controller: 'statController'}).
 		otherwise({redirectTo: '/show'});
 }]);
