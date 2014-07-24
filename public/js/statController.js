@@ -1,8 +1,12 @@
-angular.module("StatisticApp").controller("statController", function($scope) {
+angular.module("StatisticApp", ["ngRoute"]).controller("statController", function($scope) {
    
   $.ajax({
-    url: "/statistics",
+    url: "/calendarEvent",
     method: "GET",
+    data: {
+      calendarId: "geqtfulmg33djpa049401p07oo@group.calendar.google.com",
+      tokens: 
+    },
     
     success: function(data) {
 //      $scope.statistics = JSON.parse(data);
