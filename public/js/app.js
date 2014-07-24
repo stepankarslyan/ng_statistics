@@ -1,5 +1,5 @@
 angular.module('StatisticApp', ['ngRoute']).config(['$routeProvider', function($routeProvider) {
-// var path = templatePath;
+  var path = templatePath;
 //  if (!path) path = '';
 	$routeProvider.
 
