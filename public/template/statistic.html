@@ -12,15 +12,16 @@
       <td>Task end</td>
       <td>Total nubmer of tasks</td>
     </tr>
-    <tr ng-repeat="task in statistics">
-      <td>{{task.taskName}}</td>
-      <td>{{task.startDate}}</td>
-      <td></td>
-      <td></td>
+    <tr ng-repeat="task in statistics.tasks">
+      <td>{{task.name}}</td>
+      <td>{{task.start.dateTime}}</td>
+      <td>{{task.end.dateTime}}</td>
+      <td>{{task.quantity}}</td>
     </tr>
   </table>
-  <p ng-bind="start"></p>
+  
 </div>
+<div id="chart"></div>
 <script>
   //var td = d3.selectAll("table:tr:td");
  // td.style("background-color", "red");
