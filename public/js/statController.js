@@ -6,9 +6,9 @@ angular.module("StatisticApp").controller("statController", function($scope) {
       url: "/calendarEvent",
       method: "GET",
       data: { 
-        calendarId: "geqtfulmg33djpa049401p07oo@group.calendar.google.com",
+        calendarId: "something.calendar.google.com",
         tokens: {
-          access_token: "ya29.UABIJ2V5nT7u5kkAAAAR_9nkXGS4nSYnZkU0l59OuwaDuiBRHa2GlPAdIYBTVQoqfeKOI6A51jouR1P0fwBg06SWGDY7x_1IY5euLGIrGWv9iyxDR6fz2aJnD9b25g",
+          access_token: "Your access_token",
           token_type: "Bearer",
           expires_in: 3599
         },
@@ -20,10 +20,12 @@ angular.module("StatisticApp").controller("statController", function($scope) {
 
       success: function(data) {
         $scope.statistics = JSON.parse(data);
-        console.log(typeof($scope.statistics));
+        console.log(typeof($scope.statistics.tasks));
         console.log($scope.statistics.tasks);  
-        buildChart($scope.statistics.tasks);
-       // buildPieChart($scope.statistics.tasks)
+        var tasks = $scope.statistics.tasks;
+        buildBarChart($scope.statistics.tasks);
+        buildPieChart(tasks);
+        
         $scope.$apply();    
       }
       
@@ -32,9 +34,9 @@ angular.module("StatisticApp").controller("statController", function($scope) {
     
   };
 
-  //chart function
+//bar chart
   
-  var buildChart = function(task) {
+  var buildBarChart = function(task) {
     var div = d3.select("#chart");
     
     var bar = div.selectAll("div.bar")
@@ -44,23 +46,23 @@ angular.module("StatisticApp").controller("statController", function($scope) {
                   .attr("class", "bar")
                   .style("background-color", function(d) {return d3.rgb(15, 240, + d.quantity * 3);})
                   .style("height", function(d) {return d.quantity * 40 + "px"; })
-                  .text(function(d) {return d["name"];});
+                  .text(function(d) {return d.name;});
                          
   };          
   
-  //pie chart
-  //var buildPieChart = function(tasks) {
-  
-    var data = [10, 20, 50];
+//pie chart
+  var buildPieChart = function(tasks) {
+    
+    var data = tasks;
     var r = 200;
 
     var color = d3.scale.ordinal()
-      .range(["red", "blue", "green"]);
+      .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
     var canvas = d3.select("#chart")
       .append("svg")
-      .attr("width", "1500")
-      .attr("height", "1500");
+      .attr("width", "500")
+      .attr("height", "500");
       
     var group = canvas.append("g")
       .attr("transform", "translate(300, 200)");
@@ -70,7 +72,7 @@ angular.module("StatisticApp").controller("statController", function($scope) {
       .outerRadius(r);
       
     var pie = d3.layout.pie()
-      .value(function(d) {return d.data; });
+      .value(function(d) {return d.quantity; });
       
     var arcs = group.selectAll(".arc")
       .data(pie(data))
@@ -80,15 +82,14 @@ angular.module("StatisticApp").controller("statController", function($scope) {
       
     arcs.append("path")
       .attr("d", arc)
-      .attr("fill", function(d) { return color(d.data); });
+      .attr("fill", function(d) { return color(d.data.name); });
       
     arcs.append("text")
       .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
       .attr("text-anchor", "middle")
-      .attr("font-size", "1.5em")
-      .text(function(d) { return d.data; });
-    
-  
- // };
+      .attr("font-size", "1em")
+      .text(function(d) { return d.data.name; });
+      
+  };
   
 });
