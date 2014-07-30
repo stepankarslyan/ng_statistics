@@ -17,19 +17,14 @@ angular.module("StatisticApp").controller("statController", function($scope) {
         endDate: $scope.end + "T00:00:00.000Z"
       },
                 
-
       success: function(data) {
         $scope.statistics = JSON.parse(data);
-        console.log(typeof($scope.statistics.tasks));
-        console.log($scope.statistics.tasks);  
-        var tasks = $scope.statistics.tasks;
         buildBarChart($scope.statistics.tasks);
-        buildPieChart(tasks);
-        
+        var tasks = $scope.statistics.tasks;
+        buildPieChart(tasks);       
         $scope.$apply();    
       }
       
-
     });
     
   };
@@ -40,19 +35,18 @@ angular.module("StatisticApp").controller("statController", function($scope) {
     var div = d3.select("#chart");
     
     var bar = div.selectAll("div.bar")
-                  .data(task)
-                  .enter()
-                  .append("div")
-                  .attr("class", "bar")
-                  .style("background-color", function(d) {return d3.rgb(15, 240, + d.quantity * 3);})
-                  .style("height", function(d) {return d.quantity * 40 + "px"; })
-                  .text(function(d) {return d.name;});
+      .data(task)
+      .enter()
+      .append("div")
+      .attr("class", "bar")
+      .style("background-color", function(d) {return d3.rgb(15, 240, + d.quantity * 3);})
+      .style("height", function(d) {return d.quantity * 40 + "px"; })
+      .text(function(d) {return d.name;});
                          
   };          
   
 //pie chart
-  var buildPieChart = function(tasks) {
-    
+  var buildPieChart = function(tasks) {    
     var data = tasks;
     var r = 200;
 
@@ -90,6 +84,5 @@ angular.module("StatisticApp").controller("statController", function($scope) {
       .attr("font-size", "1em")
       .text(function(d) { return d.data.name; });
       
-  };
-  
+  };  
 });
