@@ -6,83 +6,105 @@ angular.module("StatisticApp").controller("statController", function($scope) {
       url: "/calendarEvent",
       method: "GET",
       data: { 
-        calendarId: "something.calendar.google.com",
+        calendarId: "levon.hakopyan@gmail.com",
         tokens: {
-          access_token: "Your access_token",
+          access_token: "ya29.UgCB0vuaDAkdcyAAAACGhieXmQYIdanoqPdSLdhqyR9qbtHxTE2SWLtgBZmmzQ",
           token_type: "Bearer",
           expires_in: 3599
-        },
-             
+        },      
         startDate: $scope.start + "T00:00:00.000Z",
-        endDate: $scope.end + "T00:00:00.000Z"
+        endDate: $scope.end + "T23:59:59.000Z"
       },
-                
+       
       success: function(data) {
         $scope.statistics = JSON.parse(data);
-        buildBarChart($scope.statistics.tasks);
-        var tasks = $scope.statistics.tasks;
-        buildPieChart(tasks);       
+        console.log(data);  
+        createCharts($scope.statistics.tasks);
         $scope.$apply();    
       }
       
     });
     
   };
-
-//bar chart
   
-  var buildBarChart = function(task) {
-    var div = d3.select("#chart");
+  var createCharts = function(tasks) {
+  	var elem = $('#graph');
+    var child = $(elem).children();
     
-    var bar = div.selectAll("div.bar")
-      .data(task)
-      .enter()
-      .append("div")
-      .attr("class", "bar")
-      .style("background-color", function(d) {return d3.rgb(15, 240, + d.quantity * 3);})
-      .style("height", function(d) {return d.quantity * 40 + "px"; })
-      .text(function(d) {return d.name;});
-                         
-  };          
+    if(child.length) {
+		  elem.empty();
+    }
+    
+  	barChart(tasks);
+  	pieChart(tasks);
+  };
   
-//pie chart
-  var buildPieChart = function(tasks) {    
+	var barChart = function(tasks) {
+    var div = d3.select("#graph")
+    		.append("div")
+    		.attr("id", "barChart");
+    
+    var bars = d3.select("#barChart")                  
+			.selectAll("div.bar")
+			.data(tasks)
+			.enter().append("div")
+			.attr("class","bar")
+			.style("width",function(d) {return d.quantity * 10 + "px" })
+			.style("outline","0.5px solid grey") 
+			.text(function(d) { return d.quantity; });
+		
+		// Add description text under chart 
+		var description = d3.select("#barChart")
+			.append("p")
+			.style("text-anchor", "middle")
+			.text("Quantity of TASKS in the selected time interval");
+	};
+  
+  var pieChart = function(tasks) {
     var data = tasks;
-    var r = 200;
-
-    var color = d3.scale.ordinal()
-      .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-
-    var canvas = d3.select("#chart")
+  	var r = 150;
+    var color = d3.scale.category20c();
+		
+		var div = d3.select("#graph")
+  		.append("div")
+  		.attr("id", "pieChart");
+  
+    var canvas = d3.select("#pieChart")
       .append("svg")
-      .attr("width", "500")
-      .attr("height", "500");
-      
+      .attr("width", 300)
+      .attr("height", 300);
+        
     var group = canvas.append("g")
-      .attr("transform", "translate(300, 200)");
-      
+  		.attr("transform", "translate(150, 150)");
+    		
     var arc = d3.svg.arc()
-      .innerRadius(0)
-      .outerRadius(r);
-      
+  		.innerRadius(50)
+  		.outerRadius(r);
+    		
     var pie = d3.layout.pie()
-      .value(function(d) {return d.quantity; });
-      
+  		.value(function(d) { return d.totalPercent; });
+    		
     var arcs = group.selectAll(".arc")
-      .data(pie(data))
-      .enter()
-      .append("g")
-      .attr("class", "pie");
-      
+  		.data(pie(data))
+  		.enter()
+  		.append("g")
+  		.attr("class", "arc");
+    		
     arcs.append("path")
-      .attr("d", arc)
-      .attr("fill", function(d) { return color(d.data.name); });
-      
+  		.attr("d", arc)
+  		.attr("fill", function(d) { return color(Math.random())});
+         
     arcs.append("text")
-      .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
-      .attr("text-anchor", "middle")
-      .attr("font-size", "1em")
-      .text(function(d) { return d.data.name; });
-      
+  		.attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")" })
+			.style("text-anchor", "middle")
+			.style("font-size", "1em")
+  		.text(function(d) {return d.value + "%"});
+   
+    // Add description text under chart 
+    var description = d3.select("#pieChart")
+  		.append("p")
+  		.style("text-anchor", "middle")
+  		.text("Percentage of time spent for each TASK in the selected time interval");
   };  
+
 });

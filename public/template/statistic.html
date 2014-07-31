@@ -1,15 +1,24 @@
 <div>
-  <h1>Task statistic</h1>
-  <label for="datePicker">From</label>
-  <input type="date"  id="datePicker" ng-model="start" class="form-control"/>
-  <label for="datePicker">Till</label>
-  <input type="date"  id="datePicker" ng-model="end" class="form-control"/>
-  <input type="button"  class="btn btn-success" ng-click="getStatistics()"/>
+  <h3>Time interval</h3>
+  <div class="row">
+		<div class="col-xs-9 col-md-6">
+			<label for="datePicker">From: </label>
+			<input type="date"  id="datePicker" ng-model="start" class="form-control"/>			
+		</div>
+		<div class="col-xs-9 col-md-6">
+			<label for="datePicker">Till: </label>
+			<input type="date"  id="datePicker" ng-model="end" class="form-control"/>
+		
+		</div>
+	</div>
+	<br />
+	<input type="button"  class="btn btn-success" ng-click="getStatistics()" value="List"/>			
+	
   <table class="table table-bordered table-hover">
     <tr class="danger">
       <td>Task name</td>
-      <td>Task start</td>
-      <td>Task end</td>
+      <td>First start of task was</td>
+      <td>Last end of task was</td>
       <td>Total nubmer of tasks</td>
     </tr>
     <tr ng-repeat="task in statistics.tasks">
@@ -21,4 +30,5 @@
   </table>
   
 </div>
-<div id="chart"></div>				
+<div id="graph"></div>
+
